@@ -7,7 +7,7 @@
 #include <vector>
 #include <set>
 
-#define SPEC_VOCAB_MAX_SIZE_DIFFERENCE  100
+#define SPEC_VOCAB_MAX_SIZE_DIFFERENCE  256
 #define SPEC_VOCAB_CHECK_START_TOKEN_ID 5
 
 struct seq_draft {
