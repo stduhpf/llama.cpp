@@ -1062,6 +1062,10 @@ bool gpt_params_find_arg(int argc, char ** argv, const std::string & arg, gpt_pa
     if (arg == "--spm-infill") {
         params.spm_infill = true;
         return true;
+    }    
+    if (arg == "--skip-queue") {
+        params.skip_queue = true;
+        return true;
     }
     if (arg == "--grammar") {
         CHECK_ARG
@@ -1452,6 +1456,8 @@ void gpt_params_print_usage(int /*argc*/, char ** argv, const gpt_params & param
     options.push_back({ "main infill", "       --in-suffix STRING",     "string to suffix after user inputs with (default: empty)" });
     options.push_back({ "server infill",
                                        "       --spm-infill",           "use Suffix/Prefix/Middle pattern for infill (instead of Prefix/Suffix/Middle) as some models prefer this. (default: %s)", params.spm_infill ? "enabled" : "disabled" });
+    options.push_back({ "server infill",
+                                       "       --skip-queue",           "Always discard queue and eval only the last task. (default: %s)", params.spm_infill ? "enabled" : "disabled" });
 
     options.push_back({ "sampling" });
     options.push_back({ "*",           "       --samplers SAMPLERS",    "samplers that will be used for generation in the order, separated by \';\'\n"

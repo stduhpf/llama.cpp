@@ -379,6 +379,7 @@ struct server_metrics {
 struct server_queue {
     int id = 0;
     bool running;
+    bool skip_queue = false;
 
     // queues
     std::vector<server_task> queue_tasks;
@@ -471,6 +472,14 @@ struct server_queue {
                     lock.unlock();
                     break;
                 }
+
+                // Surely there's a better way to do this
+                if (skip_queue && queue_tasks.size() > 1 ) {
+                    LOG_INFO("Skipping queued tasks", {{"n_skipped_tasks", queue_tasks_deferred.size() + queue_tasks.size() - 1}});
+                    queue_tasks.erase(queue_tasks.begin(), queue_tasks.end() - 1);
+                    queue_tasks_deferred.clear();
+                }
+
                 server_task task = queue_tasks.front();
                 queue_tasks.erase(queue_tasks.begin());
                 lock.unlock();
@@ -2502,6 +2511,9 @@ int main(int argc, char ** argv) {
 
     // struct that contains llama context and inference
     server_context ctx_server;
+
+    ctx_server.queue_tasks.skip_queue = params.skip_queue;
+
 
     if (!params.system_prompt.empty()) {
         ctx_server.system_prompt_set(params.system_prompt);

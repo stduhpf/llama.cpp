@@ -255,6 +255,9 @@ struct gpt_params {
     std::string cvector_negative_file = "examples/cvector-generator/negative.txt";
 
     bool spm_infill = false; // suffix/prefix/middle pattern for infill
+
+    bool skip_queue = false; // always skip server queue (for autocomplete) 
+
 };
 
 void gpt_params_handle_hf_token(gpt_params & params);
